@@ -21,6 +21,7 @@ namespace Varneon.UdonExplorer
             showPublicVariables,
             showExportedSymbols,
             showSymbols;
+        private const string UseAutoRefreshPreferenceKey = "Varneon/UdonExplorer/UseAutoRefresh";
 
         [MenuItem("Varneon/Udon Explorer")]
         public static void Init()
@@ -36,6 +37,11 @@ namespace Varneon.UdonExplorer
             currentScrollViewWidth = position.width - 300;
 
             cursorChangeRect = new Rect(currentScrollViewWidth, 0, 3, position.height + 48);
+
+            if (EditorPrefs.HasKey(UseAutoRefreshPreferenceKey))
+            {
+                useAutoRefresh = EditorPrefs.GetBool(UseAutoRefreshPreferenceKey);
+            }
 
             listView = new UdonListView(new TreeViewState(), UdonListView.Header())
             {
@@ -77,7 +83,15 @@ namespace Varneon.UdonExplorer
                 {
                     using (new GUILayout.HorizontalScope(EditorStyles.helpBox))
                     {
-                        useAutoRefresh = GUILayout.Toggle(useAutoRefresh, "Refresh On Focus");
+                        using (var scope = new EditorGUI.ChangeCheckScope())
+                        {
+                            useAutoRefresh = GUILayout.Toggle(useAutoRefresh, "Refresh On Focus");
+
+                            if (scope.changed)
+                            {
+                                EditorPrefs.SetBool(UseAutoRefreshPreferenceKey, useAutoRefresh);
+                            }
+                        }
 
                         if (GUILayout.Button("Refresh", GUILayout.Width(60)))
                         {
