@@ -338,6 +338,8 @@ namespace Varneon.UdonExplorer
             internal IUdonProgram UdonProgram;
             internal string UdonProgramExportedSymbolList;
             internal string UdonProgramSymbolList;
+            internal string UdonProgramExportedEntryPointSymbolList;
+            internal string UdonProgramEntryPointSymbolList;
             internal int UpdateOrder;
 
             internal UdonBehaviourInfo(int id, UdonBehaviour behaviour) : base(id)
@@ -380,6 +382,12 @@ namespace Varneon.UdonExplorer
                 UdonProgramExportedSymbolList = string.Join("\n", udonProgramSymbolTable.GetExportedSymbols().Select(c => $"<{udonProgramSymbolTable.GetSymbolType(c).Name}> {c}"));
 
                 UdonProgramSymbolList = string.Join("\n", udonProgramSymbolTable.GetSymbols().Select(c => $"<{udonProgramSymbolTable.GetSymbolType(c).Name}> {c}"));
+
+                IUdonSymbolTable udonProgramEntryPointTable = UdonProgram.EntryPoints;
+
+                UdonProgramEntryPointSymbolList = string.Join("\n", udonProgramEntryPointTable.GetSymbols());
+
+                UdonProgramExportedEntryPointSymbolList = string.Join("\n", udonProgramEntryPointTable.GetExportedSymbols());
             }
 
             private static string ParseFileSize(long fileLength)

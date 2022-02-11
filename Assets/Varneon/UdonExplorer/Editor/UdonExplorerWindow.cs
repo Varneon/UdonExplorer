@@ -20,7 +20,9 @@ namespace Varneon.UdonExplorer
         private bool
             showPublicVariables,
             showExportedSymbols,
-            showSymbols;
+            showSymbols,
+            showExportedEntryPoints,
+            showEntryPoints;
         private const string UseAutoRefreshPreferenceKey = "Varneon/UdonExplorer/UseAutoRefresh";
 
         [MenuItem("Varneon/Udon Explorer")]
@@ -144,6 +146,26 @@ namespace Varneon.UdonExplorer
                         using (new EditorGUI.DisabledGroupScope(true))
                         {
                             GUILayout.TextArea(SelectedItem?.UdonProgramSymbolList);
+                        }
+                    }
+
+                    GUILayout.Space(20);
+
+                    if (showExportedEntryPoints = EditorGUILayout.Foldout(showExportedEntryPoints, "Exported Entry Points"))
+                    {
+                        using (new EditorGUI.DisabledGroupScope(true))
+                        {
+                            GUILayout.TextArea(SelectedItem?.UdonProgramExportedEntryPointSymbolList);
+                        }
+                    }
+
+                    GUILayout.Space(20);
+
+                    if (showEntryPoints = EditorGUILayout.Foldout(showEntryPoints, "Entry Points"))
+                    {
+                        using (new EditorGUI.DisabledGroupScope(true))
+                        {
+                            GUILayout.TextArea(SelectedItem?.UdonProgramEntryPointSymbolList);
                         }
                     }
 
