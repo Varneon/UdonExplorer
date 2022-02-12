@@ -72,11 +72,16 @@ namespace Varneon.UdonExplorer
         {
             using (new GUILayout.HorizontalScope())
             {
-                Rect controlRect = EditorGUILayout.GetControlRect(
-                    GUILayout.ExpandHeight(true),
-                    GUILayout.ExpandWidth(true));
+                using (new GUILayout.VerticalScope())
+                {
+                    GUILayout.Label(listView.StatisticsSummary);
 
-                listView?.OnGUI(controlRect);
+                    Rect controlRect = EditorGUILayout.GetControlRect(
+                        GUILayout.ExpandHeight(true),
+                        GUILayout.ExpandWidth(true));
+
+                    listView?.OnGUI(controlRect);
+                }
 
                 DetectResizedWindow();
 

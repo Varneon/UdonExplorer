@@ -17,8 +17,17 @@ namespace Varneon.UdonExplorer
     {
         internal UdonExplorerWindow Explorer;
 
-        private static UdonBehaviour[] sceneUdonBehaviours;
-        private static int udonBehaviourCount;
+        internal string StatisticsSummary = string.Empty;
+
+        private int
+            udonBehaviourCount,
+            includedInBuildCount,
+            activeGameObjectCount,
+            enabledComponentCount,
+            manualSyncedCount,
+            continuousSyncedCount;
+
+        private static UdonBehaviour[] sceneUdonBehaviours = new UdonBehaviour[0];
         private int selectedId = -1;
 
         private static readonly GUIContent
@@ -50,6 +59,8 @@ namespace Varneon.UdonExplorer
             showBorder = true;
             header.sortingChanged += SortingChanged;
             header.ResizeToFit();
+            data = LoadUdonBehaviourInfo();
+            RefreshAllStatistics();
             Reload();
         }
 
@@ -80,6 +91,8 @@ namespace Varneon.UdonExplorer
 
                 EditorUtility.ClearProgressBar();
 
+                RefreshAllStatistics();
+
                 Explorer.Focus();
 
                 SortingChanged(multiColumnHeader);
@@ -89,6 +102,7 @@ namespace Varneon.UdonExplorer
         internal void ReloadData()
         {
             data = LoadUdonBehaviourInfo();
+            RefreshAllStatistics();
             SortingChanged(multiColumnHeader);
         }
 
@@ -199,7 +213,7 @@ namespace Varneon.UdonExplorer
             new MultiColumnHeaderState.Column{headerContent = new GUIContent("Size"){ image = IconSize.image }, contextMenuText = "Size", width = 60, minWidth = 60, maxWidth = 60, autoResize = false}}));
         }
 
-        private List<UdonBehaviourInfo> data = LoadUdonBehaviourInfo();
+        private List<UdonBehaviourInfo> data = new List<UdonBehaviourInfo>();
 
         private void Draw(Rect rect, int columnIndex, UdonBehaviourInfo data, bool selected)
         {
@@ -217,6 +231,7 @@ namespace Varneon.UdonExplorer
                             Undo.RecordObject(data.Behaviour.gameObject, "Set GameObject Active");
                             data.Behaviour.gameObject.SetActive(data.GameObjectActive);
                             data.GameObjectActiveInHierarchy = data.Behaviour.gameObject.activeInHierarchy;
+                            RefreshActiveGameObjectCount();
                         }
                     }
                     break;
@@ -229,6 +244,7 @@ namespace Varneon.UdonExplorer
                         {
                             Undo.RecordObject(data.Behaviour, "Set UdonBehaviour Enabled");
                             data.Behaviour.enabled = data.ComponentActive;
+                            RefreshEnabledComponentCount();
                         }
                     }
                     break;
@@ -408,12 +424,12 @@ namespace Varneon.UdonExplorer
             }
         }
 
-        internal static UdonBehaviour[] GetUdonBehavioursFromScene()
+        internal UdonBehaviour[] GetUdonBehavioursFromScene()
         {
             return Resources.FindObjectsOfTypeAll<UdonBehaviour>().Where(c => !PrefabUtility.IsPartOfPrefabAsset(c)).ToArray();
         }
 
-        internal static List<UdonBehaviourInfo> LoadUdonBehaviourInfo()
+        internal List<UdonBehaviourInfo> LoadUdonBehaviourInfo()
         {
             sceneUdonBehaviours = GetUdonBehavioursFromScene();
 
@@ -431,6 +447,33 @@ namespace Varneon.UdonExplorer
             EditorUtility.ClearProgressBar();
 
             return content;
+        }
+
+        private void RefreshAllStatistics()
+        {
+            RefreshActiveGameObjectCount(false);
+            RefreshEnabledComponentCount(false);
+            includedInBuildCount = data.Where(c => c.Behaviour.transform.GetComponentsInParent<Transform>(true).Any(d => !d.tag.Equals("EditorOnly"))).Count();
+            manualSyncedCount = data.Where(c => c.SyncType == VRC.SDKBase.Networking.SyncType.Manual).Count();
+            continuousSyncedCount = data.Where(c => c.SyncType == VRC.SDKBase.Networking.SyncType.Continuous).Count();
+            RefreshStatisticsSummary();
+        }
+
+        private void RefreshActiveGameObjectCount(bool refreshSummary = true)
+        {
+            activeGameObjectCount = data.Where(c => c.GameObjectActive).Count();
+            if (refreshSummary) { RefreshStatisticsSummary(); }
+        }
+
+        private void RefreshEnabledComponentCount(bool refreshSummary = true)
+        {
+            enabledComponentCount = data.Where(c => c.ComponentActive).Count();
+            if (refreshSummary) { RefreshStatisticsSummary(); }
+        }
+
+        private void RefreshStatisticsSummary()
+        {
+            StatisticsSummary = $"[ {includedInBuildCount} / {udonBehaviourCount} ] Included In Build  |  [ {activeGameObjectCount} / {udonBehaviourCount} ] Active  |  [ {enabledComponentCount} / {udonBehaviourCount} ] Enabled  |  [ {manualSyncedCount} ] Manual  |  [ {continuousSyncedCount} ] Continuous";
         }
     }
 }
