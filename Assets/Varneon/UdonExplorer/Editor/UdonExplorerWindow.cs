@@ -25,6 +25,9 @@ namespace Varneon.UdonExplorer
             showExportedEntryPoints,
             showEntryPoints;
         private const string UseAutoRefreshPreferenceKey = "Varneon/UdonExplorer/UseAutoRefresh";
+        private static readonly GUIContent
+            UseAutoRefreshToggleContent = new GUIContent("Refresh On Focus", "Should the explorer automatically refresh when the window gains focus?"),
+            RefreshButtonContent = new GUIContent("Refresh", "Manually refresh the explorer");
 
         [MenuItem("Varneon/Udon Explorer")]
         public static void Init()
@@ -93,7 +96,7 @@ namespace Varneon.UdonExplorer
                     {
                         using (var scope = new EditorGUI.ChangeCheckScope())
                         {
-                            useAutoRefresh = GUILayout.Toggle(useAutoRefresh, "Refresh On Focus");
+                            useAutoRefresh = GUILayout.Toggle(useAutoRefresh, UseAutoRefreshToggleContent);
 
                             if (scope.changed)
                             {
@@ -101,7 +104,7 @@ namespace Varneon.UdonExplorer
                             }
                         }
 
-                        if (GUILayout.Button("Refresh", GUILayout.Width(60)))
+                        if (GUILayout.Button(RefreshButtonContent, GUILayout.Width(60)))
                         {
                             listView.CheckForChangesInScene();
 
