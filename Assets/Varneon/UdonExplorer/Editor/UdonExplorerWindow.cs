@@ -126,42 +126,42 @@ namespace Varneon.UdonExplorer
 
                     if (showSyncMetadata = EditorGUILayout.Foldout(showSyncMetadata, "Sync Metadata"))
                     {
-                        GUILayout.TextArea(SelectedItem?.UdonProgramSyncMetadata);
+                        GUILayout.TextArea(listView?.UdonProgramSyncMetadata);
                     }
 
                     GUILayout.Space(20);
 
                     if (showPublicVariables = EditorGUILayout.Foldout(showPublicVariables, "Public Variables"))
                     {
-                        GUILayout.TextArea(SelectedItem?.PublicVariablesList);
+                        GUILayout.TextArea(listView?.PublicVariablesList);
                     }
 
                     GUILayout.Space(20);
 
                     if (showExportedSymbols = EditorGUILayout.Foldout(showExportedSymbols, "Exported Symbols"))
                     {
-                        GUILayout.TextArea(SelectedItem?.UdonProgramExportedSymbolList);
+                        GUILayout.TextArea(listView?.UdonProgramExportedSymbolList);
                     }
 
                     GUILayout.Space(20);
 
                     if (showSymbols = EditorGUILayout.Foldout(showSymbols, "Symbols"))
                     {
-                        GUILayout.TextArea(SelectedItem?.UdonProgramSymbolList);
+                        GUILayout.TextArea(listView?.UdonProgramSymbolList);
                     }
 
                     GUILayout.Space(20);
 
                     if (showExportedEntryPoints = EditorGUILayout.Foldout(showExportedEntryPoints, "Exported Entry Points"))
                     {
-                        GUILayout.TextArea(SelectedItem?.UdonProgramExportedEntryPointSymbolList);
+                        GUILayout.TextArea(listView?.UdonProgramExportedEntryPointSymbolList);
                     }
 
                     GUILayout.Space(20);
 
                     if (showEntryPoints = EditorGUILayout.Foldout(showEntryPoints, "Entry Points"))
                     {
-                        GUILayout.TextArea(SelectedItem?.UdonProgramEntryPointSymbolList);
+                        GUILayout.TextArea(listView?.UdonProgramEntryPointSymbolList);
                     }
 
                     GUILayout.EndScrollView();

@@ -19,6 +19,14 @@ namespace Varneon.UdonExplorer
 
         internal string StatisticsSummary = string.Empty;
 
+        internal string
+            PublicVariablesList,
+            UdonProgramSyncMetadata,
+            UdonProgramExportedSymbolList,
+            UdonProgramSymbolList,
+            UdonProgramExportedEntryPointSymbolList,
+            UdonProgramEntryPointSymbolList;
+
         private int
             udonBehaviourCount,
             includedInBuildCount,
@@ -28,6 +36,7 @@ namespace Varneon.UdonExplorer
             continuousSyncedCount;
 
         private static UdonBehaviour[] sceneUdonBehaviours = new UdonBehaviour[0];
+
         private int selectedId = -1;
 
         private static readonly GUIContent
@@ -286,7 +295,7 @@ namespace Varneon.UdonExplorer
             else
             {
                 selectedId = id;
-                selectedItem.LoadProgramInfo();
+                LoadProgramInfo(selectedItem);
                 Explorer.SelectedItem = selectedItem;
                 EditorGUIUtility.PingObject(udonBehaviour);
             }
@@ -343,7 +352,6 @@ namespace Varneon.UdonExplorer
             internal bool ComponentActive;
             internal string BehaviourName;
             internal VRC.SDKBase.Networking.SyncType SyncType;
-            internal string PublicVariablesList;
             internal AbstractUdonProgramSource UdonProgramSource;
             internal string UdonProgramSourceType;
             internal string UdonProgramSourceName;
@@ -352,11 +360,6 @@ namespace Varneon.UdonExplorer
             internal long SerializedUdonProgramSourceSize;
             internal string SerializedUdonProgramSourceSizeText;
             internal IUdonProgram UdonProgram;
-            internal string UdonProgramSyncMetadata;
-            internal string UdonProgramExportedSymbolList;
-            internal string UdonProgramSymbolList;
-            internal string UdonProgramExportedEntryPointSymbolList;
-            internal string UdonProgramEntryPointSymbolList;
             internal int UpdateOrder;
 
             internal UdonBehaviourInfo(int id, UdonBehaviour behaviour) : base(id)
@@ -386,29 +389,6 @@ namespace Varneon.UdonExplorer
                 UpdateOrder = UdonProgram.UpdateOrder;
             }
 
-            internal void LoadProgramInfo()
-            {
-                if (!UdonProgramSource) { return; }
-
-                IUdonVariableTable publicVariables = Behaviour.publicVariables;
-
-                PublicVariablesList = string.Join("\n", publicVariables.VariableSymbols.Select(c => $"<{(publicVariables.TryGetVariableType(c, out Type type) ? type.Name : "Unknown")}> {c} = {(publicVariables.TryGetVariableValue(c, out object value) ? value : "NULL")}"));
-
-                IUdonSymbolTable udonProgramSymbolTable = UdonProgram.SymbolTable;
-
-                UdonProgramSyncMetadata = string.Join("\n", UdonProgram.SyncMetadataTable.GetAllSyncMetadata().Select(c => $"[{string.Join(", ", c.Properties.Select(d => $"{d.InterpolationAlgorithm}"))}] <{udonProgramSymbolTable.GetSymbolType(c.Name).Name}> {c.Name}"));
-
-                UdonProgramExportedSymbolList = string.Join("\n", udonProgramSymbolTable.GetExportedSymbols().Select(c => $"<{udonProgramSymbolTable.GetSymbolType(c).Name}> {c}"));
-
-                UdonProgramSymbolList = string.Join("\n", udonProgramSymbolTable.GetSymbols().Select(c => $"<{udonProgramSymbolTable.GetSymbolType(c).Name}> {c}"));
-
-                IUdonSymbolTable udonProgramEntryPointTable = UdonProgram.EntryPoints;
-
-                UdonProgramEntryPointSymbolList = string.Join("\n", udonProgramEntryPointTable.GetSymbols());
-
-                UdonProgramExportedEntryPointSymbolList = string.Join("\n", udonProgramEntryPointTable.GetExportedSymbols());
-            }
-
             private static string ParseFileSize(long fileLength)
             {
                 string[] sizes = { "bytes", "KB", "MB", "GB" };
@@ -422,6 +402,29 @@ namespace Varneon.UdonExplorer
                 }
                 return ($"{fileLength} {sizes[i]}");
             }
+        }
+
+        private void LoadProgramInfo(UdonBehaviourInfo item)
+        {
+            if (!item.UdonProgramSource) { return; }
+
+            IUdonVariableTable publicVariables = item.Behaviour.publicVariables;
+
+            PublicVariablesList = string.Join("\n", publicVariables.VariableSymbols.Select(c => $"<{(publicVariables.TryGetVariableType(c, out Type type) ? type.Name : "Unknown")}> {c} = {(publicVariables.TryGetVariableValue(c, out object value) ? value : "NULL")}"));
+
+            IUdonSymbolTable udonProgramSymbolTable = item.UdonProgram.SymbolTable;
+
+            UdonProgramSyncMetadata = string.Join("\n", item.UdonProgram.SyncMetadataTable.GetAllSyncMetadata().Select(c => $"[{string.Join(", ", c.Properties.Select(d => $"{d.InterpolationAlgorithm}"))}] <{udonProgramSymbolTable.GetSymbolType(c.Name).Name}> {c.Name}"));
+
+            UdonProgramExportedSymbolList = string.Join("\n", udonProgramSymbolTable.GetExportedSymbols().Select(c => $"<{udonProgramSymbolTable.GetSymbolType(c).Name}> {c}"));
+
+            UdonProgramSymbolList = string.Join("\n", udonProgramSymbolTable.GetSymbols().Select(c => $"<{udonProgramSymbolTable.GetSymbolType(c).Name}> {c}"));
+
+            IUdonSymbolTable udonProgramEntryPointTable = item.UdonProgram.EntryPoints;
+
+            UdonProgramEntryPointSymbolList = string.Join("\n", udonProgramEntryPointTable.GetSymbols());
+
+            UdonProgramExportedEntryPointSymbolList = string.Join("\n", udonProgramEntryPointTable.GetExportedSymbols());
         }
 
         internal UdonBehaviour[] GetUdonBehavioursFromScene()
