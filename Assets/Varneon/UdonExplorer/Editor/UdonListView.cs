@@ -37,6 +37,8 @@ namespace Varneon.UdonExplorer
 
         private static UdonBehaviour[] sceneUdonBehaviours = new UdonBehaviour[0];
 
+        private const string StatisticsSummaryTemplate = "<color=#54bef8>[ {1} / {0} ]</color> Included In Build  | <color=#54bef8>[ {2} / {0} ]</color> Active | <color=#54bef8>[ {3} / {0} ]</color> Enabled | <color=#54bef8>[ {4} ]</color> Manual | <color=#54bef8>[ {5} ]</color> Continuous";
+
         private int selectedId = -1;
 
         private static readonly GUIContent
@@ -476,7 +478,15 @@ namespace Varneon.UdonExplorer
 
         private void RefreshStatisticsSummary()
         {
-            StatisticsSummary = $"[ {includedInBuildCount} / {udonBehaviourCount} ] Included In Build  |  [ {activeGameObjectCount} / {udonBehaviourCount} ] Active  |  [ {enabledComponentCount} / {udonBehaviourCount} ] Enabled  |  [ {manualSyncedCount} ] Manual  |  [ {continuousSyncedCount} ] Continuous";
+            StatisticsSummary = string.Format(
+                StatisticsSummaryTemplate,
+                udonBehaviourCount,
+                includedInBuildCount,
+                activeGameObjectCount,
+                enabledComponentCount,
+                manualSyncedCount,
+                continuousSyncedCount
+                );
         }
     }
 }

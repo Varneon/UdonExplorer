@@ -28,6 +28,7 @@ namespace Varneon.UdonExplorer
         private static readonly GUIContent
             UseAutoRefreshToggleContent = new GUIContent("Refresh On Focus", "Should the explorer automatically refresh when the window gains focus?"),
             RefreshButtonContent = new GUIContent("Refresh", "Manually refresh the explorer");
+        private static GUIStyle RichTextStyle = new GUIStyle();
 
         [MenuItem("Varneon/Udon Explorer")]
         public static void Init()
@@ -40,6 +41,8 @@ namespace Varneon.UdonExplorer
 
         private void OnEnable()
         {
+            RichTextStyle = new GUIStyle() { richText = true, normal = { textColor = EditorGUIUtility.isProSkin ? new Color(0.75f, 0.75f, 0.75f) : Color.black } };
+
             currentScrollViewWidth = position.width - 300;
 
             cursorChangeRect = new Rect(currentScrollViewWidth, 0, 3, position.height + 48);
@@ -77,7 +80,7 @@ namespace Varneon.UdonExplorer
             {
                 using (new GUILayout.VerticalScope())
                 {
-                    GUILayout.Label(listView.StatisticsSummary);
+                    GUILayout.Label(listView.StatisticsSummary, RichTextStyle);
 
                     Rect controlRect = EditorGUILayout.GetControlRect(
                         GUILayout.ExpandHeight(true),
