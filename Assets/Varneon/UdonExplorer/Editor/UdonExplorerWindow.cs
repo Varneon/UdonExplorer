@@ -107,77 +107,53 @@ namespace Varneon.UdonExplorer
                     scrollPos = GUILayout.BeginScrollView(scrollPos);
 
                     GUILayout.Label("Udon Behaviour:");
-                    using (new EditorGUI.DisabledGroupScope(true))
-                    {
-                        GUILayout.TextArea(SelectedItem?.BehaviourName);
-                    }
+                    EditorGUILayout.TextArea(SelectedItem?.BehaviourName);
 
                     GUILayout.Space(20);
 
                     GUILayout.Label("Program Source Type:");
-                    using (new EditorGUI.DisabledGroupScope(true))
-                    {
-                        GUILayout.TextArea(SelectedItem?.UdonProgramSourceType);
-                    }
+                    EditorGUILayout.TextArea(SelectedItem?.UdonProgramSourceType);
 
                     GUILayout.Space(20);
 
                     if (showSyncMetadata = EditorGUILayout.Foldout(showSyncMetadata, "Sync Metadata"))
                     {
-                        using (new EditorGUI.DisabledGroupScope(true))
-                        {
-                            GUILayout.TextArea(SelectedItem?.UdonProgramSyncMetadata);
-                        }
+                        GUILayout.TextArea(SelectedItem?.UdonProgramSyncMetadata);
                     }
 
                     GUILayout.Space(20);
 
                     if (showPublicVariables = EditorGUILayout.Foldout(showPublicVariables, "Public Variables"))
                     {
-                        using (new EditorGUI.DisabledGroupScope(true))
-                        {
-                            GUILayout.TextArea(SelectedItem?.PublicVariablesList);
-                        }
+                        GUILayout.TextArea(SelectedItem?.PublicVariablesList);
                     }
 
                     GUILayout.Space(20);
 
                     if (showExportedSymbols = EditorGUILayout.Foldout(showExportedSymbols, "Exported Symbols"))
                     {
-                        using (new EditorGUI.DisabledGroupScope(true))
-                        {
-                            GUILayout.TextArea(SelectedItem?.UdonProgramExportedSymbolList);
-                        }
+                        GUILayout.TextArea(SelectedItem?.UdonProgramExportedSymbolList);
                     }
 
                     GUILayout.Space(20);
 
                     if (showSymbols = EditorGUILayout.Foldout(showSymbols, "Symbols"))
                     {
-                        using (new EditorGUI.DisabledGroupScope(true))
-                        {
-                            GUILayout.TextArea(SelectedItem?.UdonProgramSymbolList);
-                        }
+                        GUILayout.TextArea(SelectedItem?.UdonProgramSymbolList);
                     }
 
                     GUILayout.Space(20);
 
                     if (showExportedEntryPoints = EditorGUILayout.Foldout(showExportedEntryPoints, "Exported Entry Points"))
                     {
-                        using (new EditorGUI.DisabledGroupScope(true))
-                        {
-                            GUILayout.TextArea(SelectedItem?.UdonProgramExportedEntryPointSymbolList);
-                        }
+                        GUILayout.TextArea(SelectedItem?.UdonProgramExportedEntryPointSymbolList);
                     }
 
                     GUILayout.Space(20);
 
                     if (showEntryPoints = EditorGUILayout.Foldout(showEntryPoints, "Entry Points"))
                     {
-                        using (new EditorGUI.DisabledGroupScope(true))
-                        {
-                            GUILayout.TextArea(SelectedItem?.UdonProgramEntryPointSymbolList);
-                        }
+                        GUILayout.TextArea(SelectedItem?.UdonProgramEntryPointSymbolList);
                     }
 
                     GUILayout.EndScrollView();
