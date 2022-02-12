@@ -458,7 +458,7 @@ namespace Varneon.UdonExplorer
         {
             RefreshActiveGameObjectCount(false);
             RefreshEnabledComponentCount(false);
-            includedInBuildCount = data.Where(c => c.Behaviour.transform.GetComponentsInParent<Transform>(true).Any(d => !d.tag.Equals("EditorOnly"))).Count();
+            includedInBuildCount = data.Where(c => c.Behaviour.transform.GetComponentsInParent<Transform>(true).Where(d => d.tag.Equals("EditorOnly")).Count() == 0).Count();
             manualSyncedCount = data.Where(c => c.SyncType == VRC.SDKBase.Networking.SyncType.Manual).Count();
             continuousSyncedCount = data.Where(c => c.SyncType == VRC.SDKBase.Networking.SyncType.Continuous).Count();
             RefreshStatisticsSummary();
