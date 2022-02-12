@@ -18,6 +18,7 @@ namespace Varneon.UdonExplorer
         private bool useAutoRefresh = true;
         private bool hasLatestInfo = true;
         private bool
+            showSyncMetadata,
             showPublicVariables,
             showExportedSymbols,
             showSymbols,
@@ -117,6 +118,16 @@ namespace Varneon.UdonExplorer
                     using (new EditorGUI.DisabledGroupScope(true))
                     {
                         GUILayout.TextArea(SelectedItem?.UdonProgramSourceType);
+                    }
+
+                    GUILayout.Space(20);
+
+                    if (showSyncMetadata = EditorGUILayout.Foldout(showSyncMetadata, "Sync Metadata"))
+                    {
+                        using (new EditorGUI.DisabledGroupScope(true))
+                        {
+                            GUILayout.TextArea(SelectedItem?.UdonProgramSyncMetadata);
+                        }
                     }
 
                     GUILayout.Space(20);

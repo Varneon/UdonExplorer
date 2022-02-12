@@ -336,6 +336,7 @@ namespace Varneon.UdonExplorer
             internal long SerializedUdonProgramSourceSize;
             internal string SerializedUdonProgramSourceSizeText;
             internal IUdonProgram UdonProgram;
+            internal string UdonProgramSyncMetadata;
             internal string UdonProgramExportedSymbolList;
             internal string UdonProgramSymbolList;
             internal string UdonProgramExportedEntryPointSymbolList;
@@ -378,6 +379,8 @@ namespace Varneon.UdonExplorer
                 PublicVariablesList = string.Join("\n", publicVariables.VariableSymbols.Select(c => $"<{(publicVariables.TryGetVariableType(c, out Type type) ? type.Name : "Unknown")}> {c} = {(publicVariables.TryGetVariableValue(c, out object value) ? value : "NULL")}"));
 
                 IUdonSymbolTable udonProgramSymbolTable = UdonProgram.SymbolTable;
+
+                UdonProgramSyncMetadata = string.Join("\n", UdonProgram.SyncMetadataTable.GetAllSyncMetadata().Select(c => $"[{string.Join(", ", c.Properties.Select(d => $"{d.InterpolationAlgorithm}"))}] <{udonProgramSymbolTable.GetSymbolType(c.Name).Name}> {c.Name}"));
 
                 UdonProgramExportedSymbolList = string.Join("\n", udonProgramSymbolTable.GetExportedSymbols().Select(c => $"<{udonProgramSymbolTable.GetSymbolType(c).Name}> {c}"));
 
