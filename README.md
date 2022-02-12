@@ -21,7 +21,7 @@ By right clicking an UdonBehaviour you can really quickly access any of the foll
 * Select Program Source
 * Select Serialized Program Asset
 
-![UdonExplorer](https://i.imgur.com/P07xFsf.png)
+![UdonExplorer](https://user-images.githubusercontent.com/26690821/153728148-a448da49-9ca6-44d8-bc17-a05d628ac17b.png)
 
 ---
 
