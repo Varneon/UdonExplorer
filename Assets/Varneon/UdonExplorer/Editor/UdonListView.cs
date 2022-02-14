@@ -424,9 +424,11 @@ namespace Varneon.UdonExplorer
 
             IUdonSymbolTable udonProgramEntryPointTable = item.UdonProgram.EntryPoints;
 
-            UdonProgramEntryPointSymbolList = string.Join("\n", udonProgramEntryPointTable.GetSymbols());
+            HashSet<string> publicEntryPoints = new HashSet<string>(udonProgramEntryPointTable.GetExportedSymbols());
 
-            UdonProgramExportedEntryPointSymbolList = string.Join("\n", udonProgramEntryPointTable.GetExportedSymbols());
+            UdonProgramExportedEntryPointSymbolList = string.Join("\n", publicEntryPoints);
+
+            UdonProgramEntryPointSymbolList = string.Join("\n", udonProgramEntryPointTable.GetSymbols().Where(c => !publicEntryPoints.Contains(c)));
         }
 
         internal UdonBehaviour[] GetUdonBehavioursFromScene()
