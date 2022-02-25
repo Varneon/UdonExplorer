@@ -165,42 +165,42 @@ namespace Varneon.UdonExplorer
 
                     GUILayout.Space(20);
 
-                    if (showSyncMetadata = EditorGUILayout.Foldout(showSyncMetadata, "Sync Metadata"))
+                    if (showSyncMetadata = EditorGUILayout.Foldout(showSyncMetadata, "Sync Metadata", true))
                     {
                         GUILayout.TextArea(listView?.UdonProgramSyncMetadata);
                     }
 
                     GUILayout.Space(20);
 
-                    if (showPublicVariables = EditorGUILayout.Foldout(showPublicVariables, "Public Variables"))
+                    if (showPublicVariables = EditorGUILayout.Foldout(showPublicVariables, "Public Variables", true))
                     {
                         GUILayout.TextArea(listView?.PublicVariablesList);
                     }
 
                     GUILayout.Space(20);
 
-                    if (showExportedSymbols = EditorGUILayout.Foldout(showExportedSymbols, "Exported Symbols"))
+                    if (showExportedSymbols = EditorGUILayout.Foldout(showExportedSymbols, "Exported Symbols", true))
                     {
                         GUILayout.TextArea(listView?.UdonProgramExportedSymbolList);
                     }
 
                     GUILayout.Space(20);
 
-                    if (showSymbols = EditorGUILayout.Foldout(showSymbols, "Symbols"))
+                    if (showSymbols = EditorGUILayout.Foldout(showSymbols, "Symbols", true))
                     {
                         GUILayout.TextArea(listView?.UdonProgramSymbolList);
                     }
 
                     GUILayout.Space(20);
 
-                    if (showExportedEntryPoints = EditorGUILayout.Foldout(showExportedEntryPoints, "Exported Entry Points"))
+                    if (showExportedEntryPoints = EditorGUILayout.Foldout(showExportedEntryPoints, "Exported Entry Points", true))
                     {
                         GUILayout.TextArea(listView?.UdonProgramExportedEntryPointSymbolList);
                     }
 
                     GUILayout.Space(20);
 
-                    if (showEntryPoints = EditorGUILayout.Foldout(showEntryPoints, "Entry Points"))
+                    if (showEntryPoints = EditorGUILayout.Foldout(showEntryPoints, "Entry Points", true))
                     {
                         GUILayout.TextArea(listView?.UdonProgramEntryPointSymbolList);
                     }
