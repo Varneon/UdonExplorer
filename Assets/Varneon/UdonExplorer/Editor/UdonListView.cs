@@ -492,9 +492,11 @@ namespace Varneon.UdonExplorer
 
             UdonProgramSyncMetadata = string.Join("\n", item.UdonProgram.SyncMetadataTable.GetAllSyncMetadata().Select(c => $"[{string.Join(", ", c.Properties.Select(d => $"{d.InterpolationAlgorithm}"))}] <{udonProgramSymbolTable.GetSymbolType(c.Name).Name}> {c.Name}"));
 
-            UdonProgramExportedSymbolList = string.Join("\n", udonProgramSymbolTable.GetExportedSymbols().Select(c => $"<{udonProgramSymbolTable.GetSymbolType(c).Name}> {c}"));
+            HashSet<string> exportedSymbols = new HashSet<string>(udonProgramSymbolTable.GetExportedSymbols());
 
-            UdonProgramSymbolList = string.Join("\n", udonProgramSymbolTable.GetSymbols().Select(c => $"<{udonProgramSymbolTable.GetSymbolType(c).Name}> {c}"));
+            UdonProgramExportedSymbolList = string.Join("\n", exportedSymbols.Select(c => $"<{udonProgramSymbolTable.GetSymbolType(c).Name}> {c}"));
+
+            UdonProgramSymbolList = string.Join("\n", udonProgramSymbolTable.GetSymbols().Where(c => !exportedSymbols.Contains(c)).Select(c => $"<{udonProgramSymbolTable.GetSymbolType(c).Name}> {c}"));
 
             IUdonSymbolTable udonProgramEntryPointTable = item.UdonProgram.EntryPoints;
 
