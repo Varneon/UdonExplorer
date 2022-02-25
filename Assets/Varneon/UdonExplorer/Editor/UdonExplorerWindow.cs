@@ -18,12 +18,14 @@ namespace Varneon.UdonExplorer
         private bool useAutoRefresh = true;
         private bool hasLatestInfo = true;
         private bool
+            showFilters,
             showSyncMetadata,
             showPublicVariables,
             showExportedSymbols,
             showSymbols,
             showExportedEntryPoints,
             showEntryPoints;
+        private Vector2 filterListScrollPos = new Vector2();
         private const string UseAutoRefreshPreferenceKey = "Varneon/UdonExplorer/UseAutoRefresh";
         private static readonly GUIContent
             UseAutoRefreshToggleContent = new GUIContent("Refresh On Focus", "Should the explorer automatically refresh when the window gains focus?"),
@@ -57,6 +59,8 @@ namespace Varneon.UdonExplorer
                 Explorer = this
             };
 
+            FilterEditor.ListView = listView;
+
             listView.Refresh();
         }
 
@@ -81,6 +85,40 @@ namespace Varneon.UdonExplorer
                 using (new GUILayout.VerticalScope())
                 {
                     GUILayout.Label(listView.StatisticsSummary, RichTextStyle);
+
+                    using (new GUILayout.VerticalScope(EditorStyles.helpBox))
+                    {
+                        if(showFilters = EditorGUILayout.Foldout(showFilters, $"Filters ({listView.Filters.Count})", true))
+                        {
+                            using (new GUILayout.HorizontalScope())
+                            {
+                                FilterEditor.DrawFilterEditor();
+
+                                if (GUILayout.Button("Add Filter", GUILayout.ExpandWidth(false)) && FilterEditor.IsValidFilter())
+                                {
+                                    listView.AddFilter(FilterEditor.GetFilter());
+                                }
+                            }
+
+                            using (var scope = new GUILayout.ScrollViewScope(filterListScrollPos, GUILayout.ExpandHeight(false)))
+                            {
+                                filterListScrollPos = scope.scrollPosition;
+
+                                using (new GUILayout.HorizontalScope())
+                                {
+                                    for(int i = 0; i < listView.FilterPreviewContent.Length; i++)
+                                    {
+                                        if (GUILayout.Button(listView.FilterPreviewContent[i], GUILayout.ExpandWidth(false)))
+                                        {
+                                            listView.RemoveFilterAt(i);
+
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
 
                     Rect controlRect = EditorGUILayout.GetControlRect(
                         GUILayout.ExpandHeight(true),

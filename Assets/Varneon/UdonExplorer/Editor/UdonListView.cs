@@ -19,6 +19,10 @@ namespace Varneon.UdonExplorer
 
         internal string StatisticsSummary = string.Empty;
 
+        internal List<Filter> Filters = new List<Filter>();
+
+        internal GUIContent[] FilterPreviewContent = new GUIContent[0];
+
         internal string
             PublicVariablesList,
             UdonProgramSyncMetadata,
@@ -35,6 +39,8 @@ namespace Varneon.UdonExplorer
             manualSyncedCount,
             continuousSyncedCount;
 
+        private IEnumerable<UdonBehaviourInfo> filteredData;
+
         private static UdonBehaviour[] sceneUdonBehaviours = new UdonBehaviour[0];
 
         private const string StatisticsSummaryTemplate = "<color=#54bef8>[ {1} / {0} ]</color> Included In Build  | <color=#54bef8>[ {2} / {0} ]</color> Active | <color=#54bef8>[ {3} / {0} ]</color> Enabled | <color=#54bef8>[ {4} ]</color> Manual | <color=#54bef8>[ {5} ]</color> Continuous";
@@ -48,7 +54,8 @@ namespace Varneon.UdonExplorer
             IconSync = EditorGUIUtility.IconContent("d_NetworkAnimator Icon"),
             IconScriptableObject = EditorGUIUtility.IconContent("d_ScriptableObject Icon"),
             IconScript = EditorGUIUtility.IconContent("d_cs Script Icon"),
-            IconSize = EditorGUIUtility.IconContent("d_SaveAs@2x");
+            IconSize = EditorGUIUtility.IconContent("d_SaveAs@2x"),
+            IconClose = EditorGUIUtility.IconContent("d_winbtn_mac_close_a");
 
         private static readonly GUIContent
             ContentOpenUdonSharpSourceScript = new GUIContent("Open U# Source C# Script"),
@@ -71,6 +78,7 @@ namespace Varneon.UdonExplorer
             header.sortingChanged += SortingChanged;
             header.ResizeToFit();
             data = LoadUdonBehaviourInfo();
+            filteredData = GetFilteredData0();
             RefreshAllStatistics();
             Reload();
         }
@@ -84,7 +92,7 @@ namespace Varneon.UdonExplorer
 
         internal void Refresh()
         {
-            rootItem.children = GetData();
+            rootItem.children = GetFilteredData();
             BuildRows(rootItem);
             Repaint();
         }
@@ -113,6 +121,7 @@ namespace Varneon.UdonExplorer
         internal void ReloadData()
         {
             data = LoadUdonBehaviourInfo();
+            filteredData = GetFilteredData0();
             RefreshAllStatistics();
             SortingChanged(multiColumnHeader);
         }
@@ -162,13 +171,35 @@ namespace Varneon.UdonExplorer
             }
         }
 
-        internal List<TreeViewItem> GetData()
+        internal void AddFilter(Filter filter)
         {
-            return data.Cast<TreeViewItem>().ToList();
+            Filters.Add(filter);
+            UpdateFilters();
+        }
+
+        internal void RemoveFilterAt(int index)
+        {
+            Filters.RemoveAt(index);
+            UpdateFilters();
+        }
+
+        private void UpdateFilters()
+        {
+            FilterPreviewContent = Filters.Select(c => new GUIContent(c.PreviewText, IconClose.image, "Remove")).ToArray();
+            FilterList();
+        }
+
+        internal void FilterList()
+        {
+            rootItem.children = GetFilteredData();
+            BuildRows(rootItem);
         }
 
         internal List<TreeViewItem> GetSortedData(int columnIndex, bool isAscending)
             => GetSortedData0(columnIndex, isAscending).Cast<TreeViewItem>().ToList();
+
+        internal List<TreeViewItem> GetFilteredData()
+            => GetFilteredData0().Cast<TreeViewItem>().ToList();
 
         private IEnumerable<UdonBehaviourInfo> GetSortedData0(int columnIndex, bool isAscending)
         {
@@ -176,39 +207,53 @@ namespace Varneon.UdonExplorer
             {
                 case 0:
                     return isAscending
-                    ? data.OrderBy(item => item.GameObjectActive)
-                    : data.OrderByDescending(item => item.GameObjectActive);
+                    ? filteredData.OrderBy(item => item.GameObjectActive)
+                    : filteredData.OrderByDescending(item => item.GameObjectActive);
                 case 1:
                     return isAscending
-                    ? data.OrderBy(item => item.ComponentActive)
-                    : data.OrderByDescending(item => item.ComponentActive);
+                    ? filteredData.OrderBy(item => item.ComponentActive)
+                    : filteredData.OrderByDescending(item => item.ComponentActive);
                 case 2:
                     return isAscending
-                    ? data.OrderBy(item => item.BehaviourName)
-                    : data.OrderByDescending(item => item.BehaviourName);
+                    ? filteredData.OrderBy(item => item.BehaviourName)
+                    : filteredData.OrderByDescending(item => item.BehaviourName);
                 case 3:
                     return isAscending
-                    ? data.OrderBy(item => item.SyncType.ToString())
-                    : data.OrderByDescending(item => item.SyncType.ToString());
+                    ? filteredData.OrderBy(item => item.SyncType.ToString())
+                    : filteredData.OrderByDescending(item => item.SyncType.ToString());
                 case 4:
                     return isAscending
-                    ? data.OrderBy(item => item.UpdateOrder)
-                    : data.OrderByDescending(item => item.UpdateOrder);
+                    ? filteredData.OrderBy(item => item.UpdateOrder)
+                    : filteredData.OrderByDescending(item => item.UpdateOrder);
                 case 5:
                     return isAscending
-                    ? data.OrderBy(item => item.UdonProgramSourceName)
-                    : data.OrderByDescending(item => item.UdonProgramSourceName);
+                    ? filteredData.OrderBy(item => item.UdonProgramSourceName)
+                    : filteredData.OrderByDescending(item => item.UdonProgramSourceName);
                 case 6:
                     return isAscending
-                    ? data.OrderBy(item => item.SerializedUdonProgramSourceName)
-                    : data.OrderByDescending(item => item.SerializedUdonProgramSourceName);
+                    ? filteredData.OrderBy(item => item.SerializedUdonProgramSourceName)
+                    : filteredData.OrderByDescending(item => item.SerializedUdonProgramSourceName);
                 case 7:
                     return isAscending
-                    ? data.OrderBy(item => item.SerializedUdonProgramSourceSize)
-                    : data.OrderByDescending(item => item.SerializedUdonProgramSourceSize);
+                    ? filteredData.OrderBy(item => item.SerializedUdonProgramSourceSize)
+                    : filteredData.OrderByDescending(item => item.SerializedUdonProgramSourceSize);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(columnIndex), columnIndex, null);
             }
+        }
+
+        private IEnumerable<UdonBehaviourInfo> GetFilteredData0()
+        {
+            IEnumerable<UdonBehaviourInfo> info = data;
+
+            foreach(Filter filter in Filters)
+            {
+                info = filter.FilterUdonBehaviours(info);
+            }
+
+            filteredData = info;
+
+            return info;
         }
 
         internal static MultiColumnHeader Header()
@@ -284,7 +329,7 @@ namespace Varneon.UdonExplorer
 
         private void OnSingleClickedItem(int id)
         {
-            UdonBehaviourInfo selectedItem = (UdonBehaviourInfo)GetData()[id];
+            UdonBehaviourInfo selectedItem = data[id];
 
             UdonBehaviour udonBehaviour = selectedItem.Behaviour;
 
@@ -307,7 +352,7 @@ namespace Varneon.UdonExplorer
         {
             GenericMenu menu = new GenericMenu();
 
-            UdonBehaviourInfo item = (UdonBehaviourInfo)GetData()[id];
+            UdonBehaviourInfo item = data[id];
 
             if (!item.UdonProgramSource) { menu.AddDisabledItem(ContentNoActionsAvailable); menu.ShowAsContext(); return; }
 
@@ -403,6 +448,35 @@ namespace Varneon.UdonExplorer
                     i++;
                 }
                 return ($"{fileLength} {sizes[i]}");
+            }
+
+            internal object GetFilterComparisonReferenceVariable(FilterOptions.FilterType type)
+            {
+                switch (type)
+                {
+                    case FilterOptions.FilterType.Name:
+                        return BehaviourName;
+                    case FilterOptions.FilterType.ProgramSource:
+                        return UdonProgramSourceName;
+                    case FilterOptions.FilterType.SyncMode:
+                        return SyncType;
+                    case FilterOptions.FilterType.UpdateOrder:
+                        return UpdateOrder;
+                    case FilterOptions.FilterType.SyncMetadata:
+                        return UdonProgram.SyncMetadataTable.GetAllSyncMetadata().Select(c => c.Name);
+                    case FilterOptions.FilterType.EntryPoint:
+                        return UdonProgram.EntryPoints.GetSymbols();
+                    case FilterOptions.FilterType.Symbol:
+                        return UdonProgram.SymbolTable.GetSymbols();
+                    case FilterOptions.FilterType.Proximity:
+                        return Behaviour.proximity;
+                    case FilterOptions.FilterType.AttachedComponent:
+                        return Behaviour.GetComponents<Component>().Select(c => c.GetType().FullName);
+                    case FilterOptions.FilterType.InteractText:
+                        return Behaviour.interactText;
+                    default:
+                        throw new NotImplementedException($"Comparison reference variable for FilterType {type} has not been implemented!");
+                }
             }
         }
 
