@@ -114,7 +114,7 @@ namespace Varneon.UdonExplorer
 
         private static void DrawStringReferenceField()
         {
-            if (Event.current.Equals(Event.KeyboardEvent("return")) && GUI.GetNameOfFocusedControl().Equals("StringReference") && ListView != null)
+            if (Event.current.Equals(Event.KeyboardEvent("return")) && !string.IsNullOrEmpty(StringReference) && GUI.GetNameOfFocusedControl().Equals("StringReference") && ListView != null)
             {
                 Event.current.Use();
                 ListView.AddFilter(GetFilter());
