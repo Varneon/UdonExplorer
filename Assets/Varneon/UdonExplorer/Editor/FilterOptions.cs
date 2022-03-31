@@ -23,7 +23,13 @@ namespace Varneon.UdonExplorer
             SyncMetadata,
 
             [ComparisonFilterType(ComparisonType.EnumerableString)]
+            ExportedEntryPoint,
+
+            [ComparisonFilterType(ComparisonType.EnumerableString)]
             EntryPoint,
+
+            [ComparisonFilterType(ComparisonType.EnumerableString)]
+            ExportedSymbol,
 
             [ComparisonFilterType(ComparisonType.EnumerableString)]
             Symbol,

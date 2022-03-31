@@ -464,10 +464,14 @@ namespace Varneon.UdonExplorer
                         return UpdateOrder;
                     case FilterOptions.FilterType.SyncMetadata:
                         return UdonProgram.SyncMetadataTable.GetAllSyncMetadata().Select(c => c.Name);
+                    case FilterOptions.FilterType.ExportedEntryPoint:
+                        return UdonProgram.EntryPoints.GetExportedSymbols();
                     case FilterOptions.FilterType.EntryPoint:
-                        return UdonProgram.EntryPoints.GetSymbols();
+                        return UdonProgram.EntryPoints.GetSymbols().Where(c => !UdonProgram.EntryPoints.HasExportedSymbol(c)).ToArray();
+                    case FilterOptions.FilterType.ExportedSymbol:
+                        return UdonProgram.SymbolTable.GetExportedSymbols();
                     case FilterOptions.FilterType.Symbol:
-                        return UdonProgram.SymbolTable.GetSymbols();
+                        return UdonProgram.SymbolTable.GetSymbols().Where(c => !UdonProgram.SymbolTable.HasExportedSymbol(c)).ToArray();
                     case FilterOptions.FilterType.Proximity:
                         return Behaviour.proximity;
                     case FilterOptions.FilterType.AttachedComponent:
