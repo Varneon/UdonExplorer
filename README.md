@@ -16,7 +16,7 @@
 Udon Explorer is an editor window that allows you to see all of the Udon behaviours in your scene at a glance and detailed information about them like their sync mode, execution order, propgram source, program source file size, etc. and the listing can be sorted based on any one of these columns.
 
 By right clicking an UdonBehaviour you can really quickly access any of the following methods:
-* Open Udon Graph *Udon Graph Programs Only*
+* Open Udon Graph *(Udon Graph Programs Only)*
 * Open/Select U# Source C# Script *(UdonSharp Only)*
 * Select Program Source
 * Select Serialized Program Asset
@@ -31,7 +31,11 @@ By right clicking an UdonBehaviour you can really quickly access any of the foll
 Make sure that the VRCSDK3 is already imported in your project:
 * [VRCSDK3](https://vrchat.com/download/sdk3-worlds)
 
-## Installation:
+## Installation via Unity Package Manager (git):
+1. Navigate to your toolbar: `Window` > `Package Manager` > `[+]` > `Add package from git URL...` and type in: `https://github.com/Varneon/UdonExplorer.git?path=/Packages/com.varneon.udonexplorer`
+2. Open UdonExplorer by navigating to `Varneon` > `UdonExplorer` on your Unity editor's toolbar
+
+## Installation via Unitypackage:
 1. Download latest UdonExplorer from [here](https://github.com/Varneon/UdonExplorer/releases/latest)
 2. Import the downloaded .unitypackage into your Unity project
 3. Open UdonExplorer by navigating to `Varneon` > `UdonExplorer` on your Unity editor's toolbar
