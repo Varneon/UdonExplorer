@@ -12,7 +12,10 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [],
+    "defineConstraints": [
+        "VRC_SDK_VRCSDK3",
+        "UDON"
+    ],
     "versionDefines": [],
     "noEngineReferences": false
 }
