@@ -1,5 +1,5 @@
 {
-    "name": "Varneon.UdonExplorer",
+    "name": "Varneon.UdonExplorer.Editor",
     "references": [
         "VRC.Udon",
         "VRC.Udon.Editor"
