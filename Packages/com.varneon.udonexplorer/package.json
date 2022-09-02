@@ -11,7 +11,6 @@
     "vpmDependencies": {
         "com.vrchat.worlds": "3.x.x"
     },
-    "url": "https://github.com/Varneon/UdonExplorer/archive/refs/heads/main.zip",
     "legacyFolders": {
         "Assets\\Varneon\\UdonExplorer": ""
     }
