@@ -22,22 +22,37 @@ By right clicking an UdonBehaviour you can really quickly access any of the foll
 ---
 
 # How to use UdonExplorer
-## Prerequisites:
-Make sure that the VRCSDK3 is already imported in your project:
-* [VRCSDK3](https://vrchat.com/download/sdk3-worlds)
 
-## Installation via Unity Package Manager (git):
-1. Navigate to your toolbar: `Window` > `Package Manager` > `[+]` > `Add package from git URL...` and type in: `https://github.com/Varneon/UdonExplorer.git?path=/Packages/com.varneon.udonexplorer`
-2. Open UdonExplorer by navigating to `Varneon` > `UdonExplorer` on your Unity editor's toolbar
+### Prerequisites:
 
-## Installation via [VRChat Creator Companion](https://vcc.docs.vrchat.com/):
-1. Download the the repository's .zip [here](https://github.com/Varneon/UdonExplorer/archive/refs/heads/main.zip)
-2. Unpack the .zip somewhere
-3. In VRChat Creator Companion, navigate to `Settings` > `User Packages` > `Add`
-4. Navigate to the unpacked folder, `com.varneon.udonexplorer` and click `Select Folder`
-5. `Udon Explorer` should now be visible under `Local User Packages` in the project view in VRChat Creator Companion
+* [VRCSDK3 - Worlds](https://vrchat.com/download)
 
-## Installation via Unitypackage:
-1. Download latest UdonExplorer from [here](https://github.com/Varneon/UdonExplorer/releases/latest)
-2. Import the downloaded .unitypackage into your Unity project
-3. Open UdonExplorer by navigating to `Varneon` > `UdonExplorer` on your Unity editor's toolbar
+<details><summary>
+
+### Import with [VRChat Creator Companion](https://vcc.docs.vrchat.com/vpm/packages#user-packages):</summary>
+
+> 1. Download `com.varneon.udonexplorer.zip` from [here](https://github.com/Varneon/UdonExplorer/releases/latest)
+> 2. Unpack the .zip somewhere
+> 3. In VRChat Creator Companion, navigate to `Settings` > `User Packages` > `Add`
+> 4. Navigate to the unpacked folder, `com.varneon.udonexplorer` and click `Select Folder`
+> 5. `UdonExplorer` should now be visible under `Local User Packages` in the project view in VRChat Creator Companion
+> 6. Click `Add`
+
+</details><details><summary>
+
+### Import with [Unity Package Manager (git)](https://docs.unity3d.com/2019.4/Documentation/Manual/upm-ui-giturl.html):</summary>
+
+> 1. In the Unity toolbar, select `Window` > `Package Manager` > `[+]` > `Add package from git URL...` 
+> 2. Paste the following link: `https://github.com/Varneon/UdonExplorer.git?path=/Packages/com.varneon.udonexplorer`
+
+</details><details><summary>
+
+### Import from [Unitypackage](https://docs.unity3d.com/2019.4/Documentation/Manual/AssetPackagesImport.html):</summary>
+
+> 1. Download latest `UdonExplorer` from [here](https://github.com/Varneon/UdonExplorer/releases/latest)
+> 2. Import the downloaded .unitypackage into your Unity project
+
+</details>
+
+### After importing
+* Open UdonExplorer by navigating to `Varneon` > `UdonExplorer` on your Unity editor's toolbar
