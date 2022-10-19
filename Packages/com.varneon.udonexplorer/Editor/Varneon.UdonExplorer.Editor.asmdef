@@ -16,6 +16,12 @@
         "VRC_SDK_VRCSDK3",
         "UDON"
     ],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.vrchat.worlds",
+            "expression": "3.1.9",
+            "define": "VRCSDK_WORLDS_3_1_9_OR_NEWER"
+        }
+    ],
     "noEngineReferences": false
 }
