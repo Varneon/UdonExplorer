@@ -387,7 +387,12 @@ namespace Varneon.UdonExplorer
         private void OpenUdonGraph(object userData)
         {
             UdonGraphWindow window = EditorWindow.GetWindow<UdonGraphWindow>("Udon Graph", true, typeof(SceneView));
+
+#if VRCSDK_WORLDS_3_1_9_OR_NEWER || VRCSDK3_2020_3_2_OR_NEWER // The method for opening an UdonGraphProgramAsset got renamed to 'LoadGraphFromAsset' in 3.1.9 (2020.3.2)
+            window.LoadGraphFromAsset((UdonGraphProgramAsset)userData);
+#else
             window.InitializeGraph((UdonGraphProgramAsset)userData);
+#endif
         }
 
         internal class UdonBehaviourInfo : TreeViewItem
