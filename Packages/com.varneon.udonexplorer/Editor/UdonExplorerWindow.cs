@@ -32,7 +32,11 @@ namespace Varneon.UdonExplorer
             RefreshButtonContent = new GUIContent("Refresh", "Manually refresh the explorer");
         private static GUIStyle RichTextStyle = new GUIStyle();
 
+#if VARNEON_HIDE_TOOLBAR_MENU
+        [MenuItem("Window/Varneon/Udon Explorer")]
+#else
         [MenuItem("Varneon/Udon Explorer")]
+#endif
         public static void Init()
         {
             EditorWindow window = GetWindow<UdonExplorerWindow>("Udon Explorer", true);
