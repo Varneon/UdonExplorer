@@ -8,9 +8,9 @@
 
 ---
 
-Udon Explorer is an editor window that allows you to see all of the Udon behaviours in your scene at a glance and detailed information about them like their sync mode, execution order, propgram source, program source file size, etc. and the listing can be sorted based on any one of these columns.
+Udon Explorer allows you to see all of the UdonBehaviours in your scene at a glance and detailed information about them like their sync mode, execution order, program source, program source file size, etc. and the listing can be sorted based on any one of these columns.
 
-By right clicking an UdonBehaviour you can really quickly access any of the following methods:
+By right clicking an UdonBehaviour you can access the following options:
 * Open Udon Graph *(Udon Graph Programs Only)*
 * Open/Select U# Source C# Script *(UdonSharp Only)*
 * Select Program Source
