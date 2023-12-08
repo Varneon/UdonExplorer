@@ -23,10 +23,6 @@ By right clicking an UdonBehaviour you can access the following options:
 
 # How to use UdonExplorer
 
-### Prerequisites:
-
-* [VRCSDK3 - Worlds](https://vrchat.com/download)
-
 <details><summary>
 
 ### Import with [VRChat Creator Companion](https://vcc.docs.vrchat.com/vpm/packages#user-packages):</summary>
